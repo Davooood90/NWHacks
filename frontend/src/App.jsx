@@ -5,7 +5,7 @@ function App() {
     <GoogleOAuthProvider clientId="405080598434-go6bo0850qf7ebno0lstqad1f8mi37ff.apps.googleusercontent.com">
       <GoogleLogin
         onSuccess={(credentialResponse) => {
-          console.log("Login success");
+          console.log(credentialResponse);
         }}
         onError={() => {
           console.log('Login Failed');
