@@ -14,8 +14,7 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <App />
-      <Test />
-      <Calender />
+      {/* <Calender /> */}
     </BrowserRouter>
   </StrictMode>
 );

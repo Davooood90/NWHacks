@@ -1,10 +1,10 @@
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { Routes, Route } from "react-router-dom";
 
-import AppPage from "./pages/LoginPage(BE)";
+import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import NavBar from "./components/NavBar";
-import LoginPage from "./pages/LoginPage";
+import AppPage from "./pages/AppPage";
 
 function App() {
   return (

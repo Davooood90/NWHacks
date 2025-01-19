@@ -106,6 +106,7 @@ export default function TemporaryDrawer() {
           >
             <MenuIcon />
           </IconButton>
+
           {sessionStorage.getItem("userEmail") ? <div><HorizontalBar></HorizontalBar></div> : null}
         </Toolbar>
       </AppBar>
