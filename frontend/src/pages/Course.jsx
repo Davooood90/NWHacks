@@ -15,6 +15,7 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
+import Distribution from "../components/Distribution";
 
 // const courses = [
 //   {
@@ -72,7 +73,10 @@ const googleMap = {
   MCLD : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5207.560513231968!2d-123.24941070000001!3d49.26161079999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x548672ca2ddce785%3A0xeed9111ae157bfb6!2sMacLeod%20Building!5e0!3m2!1sen!2sca!4v1737305708689!5m2!1sen!2sca",
   ICCS : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2603.798385798924!2d-123.24893130000001!3d49.261267200000006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x548672ca24d64bc7%3A0xaa87eeb3a3f3d60!2sICICS%2FCS%20Building%20(ICCS)!5e0!3m2!1sen!2sca!4v1737305736211!5m2!1sen!2sca",
   SWNG : "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2603.7131683274506!2d-123.2569674!3d49.2628823!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x548672ca7f5f71c1%3A0x5594f7f497661f04!2sWest%20Mall%20Swing%20Space!5e0!3m2!1sen!2sca!4v1737305769572!5m2!1sen!2sca",
-  ORCH : "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2603.855416136603!2d-123.2534437!3d49.2601863!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x548673ae70c956a3%3A0xa80784a84cf19ebe!2sUBC%20Orchard%20Commons%20(ORCH)%203rd%20Floor%20High%20Tech%20Study%20Nook!5e0!3m2!1sen!2sca!4v1737305791053!5m2!1sen!2sca"
+  ORCH : "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2603.855416136603!2d-123.2534437!3d49.2601863!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x548673ae70c956a3%3A0xa80784a84cf19ebe!2sUBC%20Orchard%20Commons%20(ORCH)%203rd%20Floor%20High%20Tech%20Study%20Nook!5e0!3m2!1sen!2sca!4v1737305791053!5m2!1sen!2sca",
+  IRC :  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5207.24989310837!2d-123.25204911341815!3d49.264554298281!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x548672c82e8fd6a1%3A0xfe3ed7ba3faac17b!2sP.%20A.%20Woodward%20Instructional%20Resources%20Centre%20(IRC)!5e0!3m2!1sen!2sca!4v1737308603078!5m2!1sen!2sca",
+  ANGU : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2603.608416646752!2d-123.25621602401344!3d49.26486757201627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x548673e7f1cf3635%3A0xe8b933ac63d1b62!2sHenry%20Angus%20Building%20(ANGU)!5e0!3m2!1sen!2sca!4v1737308705524!5m2!1sen!2sca",
+  GEOG : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5207.098783269862!2d-123.26104561341748!3d49.26598619818026!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x548672b43972f12f%3A0xb0909c208a37ddc!2sGeography%20Bldg%2C%201984%20West%20Mall%2C%20Vancouver%2C%20BC%20V6T%201Z2!5e0!3m2!1sen!2sca!4v1737308765534!5m2!1sen!2sca"
 }
 
 let classList = [];
@@ -235,6 +239,7 @@ const Courses = () => {
                 <strong>Details:</strong>{" "}
                 {selectedCourse.details}
               </Typography>
+              <Distribution arg = {selectedCourse}></Distribution>
             </DialogContent>
             <DialogActions>
               <Button

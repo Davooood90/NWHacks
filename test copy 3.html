@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grade Distribution Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <canvas id="myChart" width="400" height="200"></canvas>
+
+  <script>
+    function renderChart(data) {
+      // Extract labels (grade ranges) and values (counts)
+      const labels = Object.keys(data.grades);  // The keys will be the grade ranges (e.g., '50-54%', '55-59%', etc.)
+      const values = Object.values(data.grades); // The values will be the corresponding counts
+
+      // Log for debugging
+      console.log('Labels:', labels);
+      console.log('Values:', values);
+
+      const ctx = document.getElementById('myChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,  // Array of grade ranges (labels)
+          datasets: [{
+            label: 'Grade Distribution',
+            data: values,  // Array of student counts
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+
+    async function fetchGradeData() {
+      const url = 'https://ubcgrades.com/api/v3/grades/UBCV/2022S/MATH/100/92A';  // Correct API endpoint
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log('Fetched data:', data);  // Log the entire response
+        renderChart(data);  // Pass the data to the chart rendering function
+      } catch (error) {
+        console.error('Error fetching grade data:', error);
+      }
+    }
+
+    fetchGradeData();
+  </script>
+</body>
+</html>
