@@ -10,24 +10,42 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DownloadIcon from "@mui/icons-material/Download";
+import Calendar from "../components/Calendar";
 
-const scheduleData = [
-  { day: "Monday", time: "10 AM", course: "MATH 101", type: "Discussion" },
-  { day: "Monday", time: "11 AM", course: "CPSC 121", type: "Discussion" },
-  { day: "Monday", time: "1 PM", course: "COMM 192", type: "Lecture" },
-  { day: "Monday", time: "2 PM", course: "ECON 102", type: "Lecture" },
-  { day: "Tuesday", time: "1 PM", course: "CPSC 121", type: "Lecture" },
-  { day: "Tuesday", time: "2 PM", course: "COMM 101", type: "Lecture" },
-  { day: "Wednesday", time: "10 AM", course: "CPSC 121", type: "Lab" },
-  { day: "Wednesday", time: "1 PM", course: "COMM 192", type: "Lecture" },
-  { day: "Thursday", time: "10 AM", course: "MATH 101", type: "Lecture" },
-  { day: "Thursday", time: "1 PM", course: "CPSC 121", type: "Lecture" },
-  { day: "Friday", time: "10 AM", course: "COMM 101", type: "Discussion" },
-  { day: "Friday", time: "2 PM", course: "ECON 102", type: "Lecture" },
-  { day: "Friday", time: "3 PM", course: "COMM 101", type: "Lecture" },
+const classes = [
+  { day: "Monday", startTime: "08:00", endTime: "10:00", name: "Math 101" },
+  {
+    day: "Wednesday",
+    startTime: "10:30",
+    endTime: "12:00",
+    name: "Physics 202",
+  },
+  {
+    day: "Friday",
+    startTime: "13:00",
+    endTime: "15:00",
+    name: "Chemistry 303",
+  },
 ];
 
 const Schedule = () => {
+  const courses = [
+    {
+      name: "ECON 101",
+      section: "002",
+      starttime: 11,
+      endtime: 12,
+      day: "Mon",
+    },
+    {
+      name: "ECON 102",
+      section: "002",
+      starttime: 13,
+      endtime: 15,
+      day: "Mon",
+    },
+  ];
+
   const [open, setOpen] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
   const [files, setFiles] = useState([]);
@@ -52,26 +70,6 @@ const Schedule = () => {
   const handleTabChange = (event, newValue) => {
     setTabIndex(newValue);
   };
-  const times = [
-    "9 AM",
-    "10 AM",
-    "11 AM",
-    "12 PM",
-    "1 PM",
-    "2 PM",
-    "3 PM",
-    "4 PM",
-    "5 PM",
-  ];
-  const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
 
   return (
     <>
@@ -84,70 +82,15 @@ const Schedule = () => {
           pb: 2,
         }}
       >
-        <Typography variant="h6" align="center" gutterBottom>
+        <Typography
+          variant="h6"
+          align="left"
+          sx={{ marginBottom: 3 }}
+          gutterBottom
+        >
           Welcome, user_name!
         </Typography>
-        <Box sx={{ p: 4, backgroundColor: "#f9f6fb", mb: 2 }}>
-          <Grid container>
-            {/* Header */}
-            <Grid item xs={1} />
-            {days.map((day, index) => (
-              <Grid
-                item
-                xs={1.5}
-                key={index}
-                sx={{ textAlign: "center", fontWeight: "bold" }}
-              >
-                {day}
-              </Grid>
-            ))}
-            {/* Time Slots */}
-            {times.map((time) => (
-              <React.Fragment key={time}>
-                {/* Time Column */}
-                <Grid
-                  item
-                  xs={1}
-                  sx={{ textAlign: "right", pr: 1, fontWeight: "bold" }}
-                >
-                  {time}
-                </Grid>
-                {/* Schedule */}
-                {days.map((day) => (
-                  <Grid
-                    item
-                    xs={1.5}
-                    key={day}
-                    sx={{ border: "1px solid #e0e0e0", minHeight: "60px" }}
-                  >
-                    {scheduleData
-                      .filter((slot) => slot.time === time && slot.day === day)
-                      .map((slot, idx) => (
-                        <Paper
-                          key={idx}
-                          elevation={3}
-                          sx={{
-                            backgroundColor: "#dcd6f7",
-                            p: 1,
-                            mb: 0.5,
-                            fontSize: "0.875rem",
-                          }}
-                        >
-                          <Typography
-                            variant="subtitle2"
-                            sx={{ fontWeight: "bold" }}
-                          >
-                            {slot.course}
-                          </Typography>
-                          <Typography variant="body2">{slot.type}</Typography>
-                        </Paper>
-                      ))}
-                  </Grid>
-                ))}
-              </React.Fragment>
-            ))}
-          </Grid>
-        </Box>
+        <Calendar courses={courses} />
         <Box
           sx={{
             display: "flex",
@@ -172,9 +115,7 @@ const Schedule = () => {
             Export
           </Button>
         </Box>
-
         {/* Modal */}
-
         <Modal open={openUploadModal} onClose={handleCloseUpload}>
           <Box
             sx={{
@@ -259,7 +200,6 @@ const Schedule = () => {
             )}
           </Box>
         </Modal>
-
         <Modal open={openExportModal} onClose={handleCloseExport}>
           <Box
             sx={{
