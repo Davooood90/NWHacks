@@ -31,13 +31,9 @@ const CsvXlsxToJson = () => {
   const xlsxToJson = (data) => {
     try {
       const workbook = XLSX.read(data, { type: "array" });
-      // console.log(workbook);
       const sheetName = workbook.SheetNames[0];
       const sheet = workbook.Sheets[sheetName];
-      // console.log(sheet, sheetName);
       const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-
-      console.log(json);
 
       if (!json || json.length === 0) {
         throw new Error("The XLSX file is empty or has invalid structure.");
@@ -106,8 +102,6 @@ const CsvXlsxToJson = () => {
             start_date: tempArr[2],
           };
 
-          // console.log("User Info:", userJson);
-
           let courseL = [];
 
           for (let i = 2; i < json.length; i++) {
@@ -129,7 +123,6 @@ const CsvXlsxToJson = () => {
               end: json[i]["Column_12"] || "",
             };
 
-            // console.log("Course Info:", courseJson);
             courseL.push(courseJson);
           }
 
@@ -138,13 +131,17 @@ const CsvXlsxToJson = () => {
             id: userJson.id,
             faculty: userJson.name,
             start_date: userJson.start_date, 
-            email: "john.doe@example.com",
             courseList: courseL,
           };
 
-          console.log(userData);
+          const savedEmail = sessionStorage.getItem("userEmail");
 
-          axios.post("http://localhost:3000/save-json", userData);
+          const updates = {
+            "email": savedEmail,
+            "updates" : userData
+          }
+
+          axios.put("http://localhost:3000/update", updates);
 
         } else {
           console.warn("The JSON structure does not contain 'My Enrolled Courses' at index 2.");
