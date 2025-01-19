@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Maps Location Search</title>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Search for a Location</h2>
+        <input id="locationInput" type="text" placeholder="Enter location" style="width: 100%; padding: 10px;">
+        <button onclick="searchLocation()">Search</button>
+
+        <div id="map"></div>
+    </div>
+
+    <script>
+        let map;
+        let geocoder;
+        let marker;
+
+        function initMap() {
+            // Initialize map at a default location (San Francisco)
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 37.7749, lng: -122.4194 }, // Default location: San Francisco
+                zoom: 12
+            });
+            
+            // Initialize geocoder to convert address to coordinates
+            geocoder = new google.maps.Geocoder();
+        }
+
+        function searchLocation() {
+            const address = document.getElementById("locationInput").value;
+
+            if (address) {
+                geocoder.geocode({ 'address': address }, function (results, status) {
+                    if (status === 'OK') {
+                        // If the geocoding was successful, move the map center to the new location
+                        map.setCenter(results[0].geometry.location);
+                        
+                        // Place a marker at the location
+                        if (marker) {
+                            marker.setMap(null);  // Remove the previous marker if it exists
+                        }
+                        marker = new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location
+                        });
+                    } else {
+                        alert("Geocode was not successful for the following reason: " + status);
+                    }
+                });
+            } else {
+                alert("Please enter a location.");
+            }
+        }
+    </script>
+
+    <!-- Add Google Maps API script -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+
+</body>
+</html>

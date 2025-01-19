@@ -16,54 +16,64 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 
-const courses = [
-  {
-    title: "COMM 192",
-    location: "ANGU-Floor 2-Room 295",
-    type: "Discussion",
-    action: "View more",
-    credits: 3,
-    details: {
-      instructor: "Robert Gateman",
-      materials: "MyLab, gBook, Power Point Slides",
-      midterms: [
-        { title: "Midterm 1", date: "February 7th, 2024" },
-        { title: "Midterm 2", date: "March 14th, 2024" },
-      ],
-      finalExam: "Exam Period: April 12th to 27th, 2024",
-      additionalInfo: [
-        "You will require a reliable computer with fast WiFi connectivity and a mobile device for TopHat.",
-        "The lectures are in-person, in the classroom and are not recorded.",
-        "Tutorials start the second week of the course.",
-        "Attendance is expected; attendance will be randomly recorded via TopHat.",
-      ],
-    },
-  },
-  {
-    title: "ECON 102",
-    location: "IRC-Floor B1-Room 2",
-    type: "Discussion",
-    action: "View more",
-  },
-  {
-    title: "CPSC 121",
-    location: "GEOG-Floor 1-Room 100",
-    type: "Lab",
-    action: "View more",
-  },
-  {
-    title: "MATH 101",
-    location: "IRC-Floor B1-Room 2",
-    type: "Lecture",
-    action: "Upload syllabus",
-  },
-  {
-    title: "COMM 101",
-    location: "ANGU-Floor 4 & 5-Room 492",
-    type: "Lecture",
-    action: "Upload syllabus",
-  },
-];
+// const courses = [
+//   {
+//     title: "COMM 192",
+//     location: "ANGU-Floor 2-Room 295",
+//     type: "Discussion",
+//     action: "View more",
+//     credits: 3,
+//     details: {
+//       instructor: "Robert Gateman",
+//       materials: "MyLab, gBook, Power Point Slides",
+//       midterms: [
+//         { title: "Midterm 1", date: "February 7th, 2024" },
+//         { title: "Midterm 2", date: "March 14th, 2024" },
+//       ],
+//       finalExam: "Exam Period: April 12th to 27th, 2024",
+//       additionalInfo: [
+//         "You will require a reliable computer with fast WiFi connectivity and a mobile device for TopHat.",
+//         "The lectures are in-person, in the classroom and are not recorded.",
+//         "Tutorials start the second week of the course.",
+//         "Attendance is expected; attendance will be randomly recorded via TopHat.",
+//       ],
+//     },
+//   },
+//   {
+//     title: "ECON 102",
+//     location: "IRC-Floor B1-Room 2",
+//     type: "Discussion",
+//     action: "View more",
+//   },
+//   {
+//     title: "CPSC 121",
+//     location: "GEOG-Floor 1-Room 100",
+//     type: "Lab",
+//     action: "View more",
+//   },
+//   {
+//     title: "MATH 101",
+//     location: "IRC-Floor B1-Room 2",
+//     type: "Lecture",
+//     action: "Upload syllabus",
+//   },
+//   {
+//     title: "COMM 101",
+//     location: "ANGU-Floor 4 & 5-Room 492",
+//     type: "Lecture",
+//     action: "Upload syllabus",
+//   },
+// ];
+
+const googleMap = {
+  FSC : "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2603.8058819608514!2d-123.2496665906919!3d49.261125125718486!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5486735f5e5ce1bf%3A0xf8eebb3d6669987c!2sUBC%20Forest%20Sciences%20Centre%20(FSC)!5e0!3m2!1sen!2sca!4v1737305569835!5m2!1sen!2sca",
+  CHBE : "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2603.740779415785!2d-123.2500252!3d49.262359!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x548672c99e1f0ebd%3A0x75588dc5d8dbcfe5!2sUBC%20Chemical%20and%20Biological%20Engineering%20Building%20(CHBE)!5e0!3m2!1sen!2sca!4v1737305635803!5m2!1sen!2sca",
+  CEME : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5207.433829083475!2d-123.2489328!3d49.262811299999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x548672c989161975%3A0x798d600622fd2267!2sCivil%20and%20Mechanical%20Engineering%20Building%20(CEME)!5e0!3m2!1sen!2sca!4v1737305677946!5m2!1sen!2sca",
+  MCLD : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5207.560513231968!2d-123.24941070000001!3d49.26161079999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x548672ca2ddce785%3A0xeed9111ae157bfb6!2sMacLeod%20Building!5e0!3m2!1sen!2sca!4v1737305708689!5m2!1sen!2sca",
+  ICCS : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2603.798385798924!2d-123.24893130000001!3d49.261267200000006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x548672ca24d64bc7%3A0xaa87eeb3a3f3d60!2sICICS%2FCS%20Building%20(ICCS)!5e0!3m2!1sen!2sca!4v1737305736211!5m2!1sen!2sca",
+  SWNG : "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2603.7131683274506!2d-123.2569674!3d49.2628823!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x548672ca7f5f71c1%3A0x5594f7f497661f04!2sWest%20Mall%20Swing%20Space!5e0!3m2!1sen!2sca!4v1737305769572!5m2!1sen!2sca",
+  ORCH : "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2603.855416136603!2d-123.2534437!3d49.2601863!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x548673ae70c956a3%3A0xa80784a84cf19ebe!2sUBC%20Orchard%20Commons%20(ORCH)%203rd%20Floor%20High%20Tech%20Study%20Nook!5e0!3m2!1sen!2sca!4v1737305791053!5m2!1sen!2sca"
+}
 
 let classList = [];
 
@@ -169,7 +179,7 @@ const Courses = () => {
                   <Box sx={{ marginBottom: 2 }}>
                     {/* Google Maps Embed */}
                     <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5207.221445035165!2d-123.25636882345813!3d49.26482387139015!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x548672b5db6faaeb%3A0x7d0e6eae5fc5e75!2sUBC%20Sauder%20School%20of%20Business!5e0!3m2!1sen!2sca!4v1737283234349!5m2!1sen!2sca"
+                      src= {googleMap[course.location.split('-')[0]]}
                       width="100%"
                       height="200"
                       style={{ border: 0 }}
