@@ -4,14 +4,22 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
+import { useNavigate, useLocation } from "react-router-dom"; // Import useLocation
 
 const pages = ["Dashboard", "Timetable", "Courses", "Grades"];
+const pageRoutes = {
+  Dashboard: "/app",
+  Timetable: "/app/timetable",
+  Courses: "/app/courses",
+  Grades: "/app/grades",
+};
 
 function ResponsiveAppBar() {
-  const [activePage, setActivePage] = React.useState("Dashboard");
+  const location = useLocation(); // Get the current location (URL)
+  const navigate = useNavigate(); // Initialize navigate hook
 
   const handleNavClick = (page) => {
-    setActivePage(page);
+    navigate(pageRoutes[page]); // Navigate to the selected route
   };
 
   return (
@@ -33,11 +41,13 @@ function ResponsiveAppBar() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={() => handleNavClick(page)}
+                onClick={() => handleNavClick(page)} // Trigger handleNavClick
                 sx={{
                   my: 2,
-                  color: activePage === page ? "black" : "gray",
-                  fontWeight: activePage === page ? "bold" : "normal",
+                  color:
+                    location.pathname === pageRoutes[page] ? "black" : "gray", // Highlight based on current path
+                  fontWeight:
+                    location.pathname === pageRoutes[page] ? "bold" : "normal", // Bold based on current path
                   textTransform: "none",
                   fontSize: "16px",
                   px: 2,
