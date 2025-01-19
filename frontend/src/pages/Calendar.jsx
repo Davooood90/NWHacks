@@ -1,27 +1,29 @@
+import React, { useState } from "react";
 import axios from "axios";
 
 function Calender() {
+  const [icsContent, setIcsContent] = useState(""); // State to hold iCalendar content
+  const [courses, setCourses] = useState([]); // State to hold course list
+
   // Function to convert input string into an iCalendar formatted string
   const StringToCal = (name, description, inputString) => {
     const temp = inputString.split(" | ");
-    console.log(temp);
-
     const date = temp[0].split(" - ");
     const time = temp[2].split(" - ");
 
-    const startDate = date[0]; // 2025-01-10
-    const endDate = date[1]; // 2025-02-14
-    const daysOfWeek = temp[1]; // Fri
-    const startTime = time[0]; // 11:00 a.m.
-    const endTime = time[1]; // 12:00 p.m.
-    const location = temp[3]; // FSC-Floor 1-Room 1221
+    const startDate = date[0];
+    const endDate = date[1];
+    const daysOfWeek = temp[1];
+    const startTime = time[0];
+    const endTime = time[1];
+    const location = temp[3];
 
-    const uid = "uid" + Math.random().toString(36).substring(2, 15); // Random UID
-    const dtstamp = new Date().toISOString().replace(/[-:]/g, "").split(".")[0]; // Current timestamp
+    const uid = "uid" + Math.random().toString(36).substring(2, 15);
+    const dtstamp = new Date().toISOString().replace(/[-:]/g, "").split(".")[0];
     const startDateFormatted = startDate.replace(/-/g, "");
     const endDateFormatted = endDate.replace(/-/g, "");
 
-    // Convert time to 24-hour format (without a.m./p.m.)
+    // Convert time to 24-hour format
     const formatTimeTo24Hr = (time) => {
       const [hour, minute] = time.split(":");
       const isPM = time.toLowerCase().includes("pm");
@@ -29,27 +31,22 @@ function Calender() {
 
       let hour24 = parseInt(hour, 10);
 
-      // Convert to 24-hour format
       if (isPM && hour24 !== 12) {
-        hour24 += 12; // Convert PM hours (except 12 PM) to 24-hour format
+        hour24 += 12;
       }
       if (isAM && hour24 === 12) {
-        hour24 = 0; // Convert 12 AM to 00:00
+        hour24 = 0;
       }
 
-      const temp = `${hour24.toString().padStart(2, "0")}${minute.padStart(
+      return `${hour24.toString().padStart(2, "0")}${minute.padStart(
         2,
         "0"
-      )}`;
-
-      return temp.substring(0, 4); // Ensures 4 digits (e.g., 1400)
+      )}`.substring(0, 4);
     };
 
     const startTime24 = formatTimeTo24Hr(startTime);
     const endTime24 = formatTimeTo24Hr(endTime);
-    console.log(startTime24);
 
-    // Generate RRULE (Recurrence rule) for repeating events
     const recurrence = {
       FREQ: "WEEKLY",
       BYDAY: daysOfWeek
@@ -76,8 +73,7 @@ function Calender() {
 
     const recurrenceRule = `RRULE:FREQ=${recurrence.FREQ};BYDAY=${recurrence.BYDAY};UNTIL=${recurrence.UNTIL}`;
 
-    // iCalendar format
-    let calendarEvent = `BEGIN:VEVENT
+    return `BEGIN:VEVENT
 DESCRIPTION:${description}
 UID:${uid}
 DTSTAMP:${dtstamp}
@@ -87,8 +83,6 @@ SUMMARY:${name}
 LOCATION:${location}
 ${recurrenceRule}
 END:VEVENT\n`;
-
-    return calendarEvent;
   };
 
   const CourseList = async () => {
@@ -99,8 +93,9 @@ END:VEVENT\n`;
     });
 
     const res = response.data[0]["courseList"];
+    setCourses(res); // Update courses state
 
-    let icsContent = `BEGIN:VCALENDAR
+    let newIcsContent = `BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Your Organization//NONSGML v1.0//EN
 CALSCALE:GREGORIAN
@@ -116,45 +111,51 @@ CALSCALE:GREGORIAN
       `;
 
       const name = res[i]["name"];
-
       const meetings = res[i]["meeting"]
         .split("\n")
         .filter((item) => item !== "");
+
       for (const meeting of meetings) {
-        icsContent += StringToCal(name, description, meeting);
+        newIcsContent += StringToCal(name, description, meeting);
       }
     }
 
-    icsContent += `END:VCALENDAR`;
+    newIcsContent += `END:VCALENDAR`;
+    setIcsContent(newIcsContent); // Update iCalendar content state
+  };
 
-    // Create a Blob and download it as .ics
+  const handleDownloadICS = () => {
     const blob = new Blob([icsContent], { type: "text/calendar" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=Event&dates=20250101T090000Z/20250101T100000Z&details=Event+details&location=Event+location&sf=true&output=xml&src=${encodeURIComponent(icsFileUrl)}`;
-    window.open(googleCalendarUrl, '_blank');
     link.download = "calendar-events.ics";
     link.click();
   };
 
-  const handleDownloadICS = () => {
-    CourseList();
-  };
-
-  const handleAddToGoogleCalendar = () => {
-    // You can implement the logic to add to Google Calendar here
-    // This requires using the Google Calendar API.
-    CourseList();
+  const handleFetchAndUpdate = () => {
+    CourseList(); // Fetch and update calendar content
   };
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <button onClick={handleDownloadICS} style={{ margin: "10px" }}>
+      <button onClick={handleFetchAndUpdate} style={{ margin: "10px" }}>
+        Fetch and Update Calendar
+      </button>
+      <button
+        onClick={handleDownloadICS}
+        style={{ margin: "10px" }}
+        disabled={!icsContent}
+      >
         Download as iCalendar (.ics)
       </button>
-      <button onClick={handleAddToGoogleCalendar} style={{ margin: "10px" }}>
-        Add to Google Calendar
-      </button>
+      <div style={{ marginTop: "20px" }}>
+        <h3>Courses:</h3>
+        <ul>
+          {courses.map((course, index) => (
+            <li key={index}>{course.name}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
