@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import NavBar from "./components/NavBar";
+import AppPage from "./pages/AppPage";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/app" element={<AppPage />} />
       </Routes>
     </GoogleOAuthProvider>
   );
