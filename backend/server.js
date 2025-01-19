@@ -11,8 +11,32 @@ app.use(express.json());
 
 connectDB();
 
-const DataSchema = new mongoose.Schema({}, { strict: false });
-const DataModel = mongoose.model('Data', DataSchema);
+const UserSchema = new mongoose.Schema(
+    {
+      name: { type: String, required: true }, // User's name
+      email: { type: String, required: true, unique: true }, // User's email
+      courseList: [
+        {
+          name: { type: String, required: true }, // Course name
+          section: { type: String, required: true }, // Course section
+          credits: { type: String, required: true }, // Number of credits
+          grading: { type: String, required: true }, // Grading type (e.g., "Graded")
+          term: { type: Number, required: true }, // Term (e.g., 1, 2)
+          format: { type: String, required: true }, // Format (e.g., "Lecture")
+          mode: { type: String, required: true }, // Mode (e.g., "Online Learning")
+          instructor: { type: String, required: false }, // Instructor's name
+          meeting: { type: String, required: false }, // Meeting details (optional)
+          status: { type: String, required: true }, // Status (e.g., "Registered")
+          start: { type: String, required: true }, // Start date
+          end: { type: String, required: true }, // En  d date
+        },
+      ],
+    },
+    {
+      timestamps: true, // Automatically add `createdAt` and `updatedAt` fields
+    }
+);
+const DataModel = mongoose.model('Data', UserSchema);
 
 app.get('/', (req, res) => {
     res.send('Server is ready');
