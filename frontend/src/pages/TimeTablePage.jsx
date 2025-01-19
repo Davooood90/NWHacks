@@ -14,23 +14,6 @@ import Calendar from "../components/Calendar";
 import axios from "axios";
 import * as XLSX from "xlsx";
 
-
-// const scheduleData = [
-//   { day: "Monday", time: "10 AM", course: "MATH 101", type: "Discussion" },
-//   { day: "Monday", time: "11 AM", course: "CPSC 121", type: "Discussion" },
-//   { day: "Monday", time: "1 PM", course: "COMM 192", type: "Lecture" },
-//   { day: "Monday", time: "2 PM", course: "ECON 102", type: "Lecture" },
-//   { day: "Tuesday", time: "1 PM", course: "CPSC 121", type: "Lecture" },
-//   { day: "Tuesday", time: "2 PM", course: "COMM 101", type: "Lecture" },
-//   { day: "Wednesday", time: "10 AM", course: "CPSC 121", type: "Lab" },
-//   { day: "Wednesday", time: "1 PM", course: "COMM 192", type: "Lecture" },
-//   { day: "Thursday", time: "10 AM", course: "MATH 101", type: "Lecture" },
-//   { day: "Thursday", time: "1 PM", course: "CPSC 121", type: "Lecture" },
-//   { day: "Friday", time: "10 AM", course: "COMM 101", type: "Discussion" },
-//   { day: "Friday", time: "2 PM", course: "ECON 102", type: "Lecture" },
-//   { day: "Friday", time: "3 PM", course: "COMM 101", type: "Lecture" },
-// ];
-
 let schedule = [];
 
 const Schedule = () => {
@@ -39,7 +22,7 @@ const Schedule = () => {
       name: "ECON 101",
       section: "002",
       starttime: 11,
-      endtime: 12,
+      endtime: 13,
       day: "Mon",
     },
     {
