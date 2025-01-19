@@ -3,14 +3,14 @@ import * as XLSX from "xlsx";
 import axios from "axios";
 
 const CsvXlsxToJson = () => {
-  const [jsonData, setJsonData] = useState(null);          // To store and display parsed JSON
-  const [errorMessage, setErrorMessage] = useState("");    // To handle and display errors
+  const [jsonData, setJsonData] = useState(null); // To store and display parsed JSON
+  const [errorMessage, setErrorMessage] = useState(""); // To handle and display errors
   const [successMessage, setSuccessMessage] = useState(""); // To display success messages
 
   // Function to convert CSV to JSON
   const csvToJson = (csv) => {
     const lines = csv.trim().split("\n");
-    const headers = lines[0].split(",").map(header => header.trim());
+    const headers = lines[0].split(",").map((header) => header.trim());
     const result = [];
 
     for (let i = 1; i < lines.length; i++) {
@@ -31,23 +31,21 @@ const CsvXlsxToJson = () => {
   const xlsxToJson = (data) => {
     try {
       const workbook = XLSX.read(data, { type: "array" });
-      // console.log(workbook);
       const sheetName = workbook.SheetNames[0];
       const sheet = workbook.Sheets[sheetName];
-      // console.log(sheet, sheetName);
       const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-
-      console.log(json);
 
       if (!json || json.length === 0) {
         throw new Error("The XLSX file is empty or has invalid structure.");
       }
 
-      const headers = json[0].map(header => header.trim());
-      const result = json.slice(1).map(row => {
+      const headers = json[0].map((header) => header.trim());
+      const result = json.slice(1).map((row) => {
         const obj = {};
         row.forEach((cell, index) => {
-          obj[headers[index] || `Column_${index + 1}`] = cell ? cell.toString().trim() : "";
+          obj[headers[index] || `Column_${index + 1}`] = cell
+            ? cell.toString().trim()
+            : "";
         });
         return obj;
       });
@@ -55,16 +53,18 @@ const CsvXlsxToJson = () => {
       return result;
     } catch (error) {
       console.error("Error parsing XLSX file:", error);
-      throw new Error("Failed to parse XLSX file. Ensure it's a valid XLSX format.");
+      throw new Error(
+        "Failed to parse XLSX file. Ensure it's a valid XLSX format."
+      );
     }
   };
 
   // Handler for file input change
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setErrorMessage("");     // Reset error message
-    setJsonData(null);       // Reset previous JSON data
-    setSuccessMessage("");   // Reset success message
+    setErrorMessage(""); // Reset error message
+    setJsonData(null); // Reset previous JSON data
+    setSuccessMessage(""); // Reset success message
 
     if (!file) {
       setErrorMessage("No file selected.");
@@ -75,7 +75,9 @@ const CsvXlsxToJson = () => {
     const validExtensions = ["csv", "xlsx"];
 
     if (!validExtensions.includes(fileExtension)) {
-      setErrorMessage("Unsupported file type. Please upload a CSV or XLSX file.");
+      setErrorMessage(
+        "Unsupported file type. Please upload a CSV or XLSX file."
+      );
       return;
     }
 
@@ -106,14 +108,14 @@ const CsvXlsxToJson = () => {
             start_date: tempArr[2],
           };
 
-          // console.log("User Info:", userJson);
-
           let courseL = [];
 
           for (let i = 2; i < json.length; i++) {
             if (!json[i]["My Enrolled Courses"]) continue;
 
-            const term = json[i]["My Enrolled Courses"].includes("Term 1") ? 1 : 2;
+            const term = json[i]["My Enrolled Courses"].includes("Term 1")
+              ? 1
+              : 2;
             const courseJson = {
               name: json[i]["Column_2"] || "",
               credits: json[i]["Column_3"] || "",
@@ -129,7 +131,6 @@ const CsvXlsxToJson = () => {
               end: json[i]["Column_12"] || "",
             };
 
-            // console.log("Course Info:", courseJson);
             courseL.push(courseJson);
           }
 
@@ -137,17 +138,22 @@ const CsvXlsxToJson = () => {
             name: userJson.name,
             id: userJson.id,
             faculty: userJson.name,
-            start_date: userJson.start_date, 
-            email: "john.doe@example.com",
+            start_date: userJson.start_date,
             courseList: courseL,
           };
 
-          console.log(userData);
+          const savedEmail = sessionStorage.getItem("userEmail");
 
-          axios.post("http://localhost:3000/save-json", userData);
+          const updates = {
+            email: savedEmail,
+            updates: userData,
+          };
 
+          axios.put("http://localhost:3000/update", updates);
         } else {
-          console.warn("The JSON structure does not contain 'My Enrolled Courses' at index 2.");
+          console.warn(
+            "The JSON structure does not contain 'My Enrolled Courses' at index 2."
+          );
         }
       } catch (error) {
         setErrorMessage(error.message);
@@ -170,7 +176,13 @@ const CsvXlsxToJson = () => {
       {jsonData && (
         <div style={{ marginTop: "20px" }}>
           <h2>Parsed JSON:</h2>
-          <pre style={{ background: "#f4f4f4", padding: "10px", borderRadius: "5px" }}>
+          <pre
+            style={{
+              background: "#f4f4f4",
+              padding: "10px",
+              borderRadius: "5px",
+            }}
+          >
             {JSON.stringify(jsonData, null, 2)}
           </pre>
         </div>
