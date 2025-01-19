@@ -1,0 +1,50 @@
+.grid-calendar-container {
+  grid-gap: 0;
+  color: #5b5b5b;
+  display: grid;
+  font-family: M PLUS\1p, Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  grid-auto-rows: 30px;
+  grid-template-columns: [times] 5em [Mon] 1fr [Tue] 1fr [Wed] 1fr [Thu] 1fr [Fri] 1fr;
+  padding: 1rem;
+  -webkit-user-select: none;
+  user-select: none;
+  background-color: #fef7ff;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+div.cal-background-grid.first-col.first-row {
+  border-top-left-radius: 20px;
+  border-width: 0;
+}
+
+div.cal-background-grid.first-col {
+  border-width: 0;
+  justify-content: right;
+  padding-right: 1em;
+}
+
+div.cal-background-grid.first-row {
+  border-width: 0 1px;
+  font-weight: 700;
+}
+
+div.cal-background-grid {
+  align-items: center;
+  border: 1px solid #ebebeb;
+  display: flex;
+  justify-content: center;
+}
+
+.cal-slot {
+  align-items: center;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 2px;
+  z-index: 4;
+}

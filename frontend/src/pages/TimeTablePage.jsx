@@ -10,6 +10,7 @@ import Container from "@mui/material/Container";
 import TextField from "@mui/material/TextField";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DownloadIcon from "@mui/icons-material/Download";
+import Calendar from "../components/Calendar";
 import axios from "axios";
 import * as XLSX from "xlsx";
 
@@ -33,6 +34,23 @@ import * as XLSX from "xlsx";
 let schedule = [];
 
 const Schedule = () => {
+  const courses = [
+    {
+      name: "ECON 101",
+      section: "002",
+      starttime: 11,
+      endtime: 12,
+      day: "Mon",
+    },
+    {
+      name: "ECON 102",
+      section: "002",
+      starttime: 13,
+      endtime: 15,
+      day: "Mon",
+    },
+  ];
+
   const [open, setOpen] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
   const [files, setFiles] = useState([]);
@@ -382,26 +400,6 @@ CALSCALE:GREGORIAN
   const handleTabChange = (event, newValue) => {
     setTabIndex(newValue);
   };
-  const times = [
-    "9 AM",
-    "10 AM",
-    "11 AM",
-    "12 PM",
-    "1 PM",
-    "2 PM",
-    "3 PM",
-    "4 PM",
-    "5 PM",
-  ];
-  const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
 
   return (
     <>
@@ -414,7 +412,12 @@ CALSCALE:GREGORIAN
           pb: 2,
         }}
       >
-        <Typography variant="h6" align="center" gutterBottom>
+        <Typography
+          variant="h6"
+          align="left"
+          sx={{ marginBottom: 3 }}
+          gutterBottom
+        >
           Welcome, user_name!
         </Typography>
         <Box sx={{ p: 4, backgroundColor: "#f9f6fb", mb: 2 }}>
@@ -502,9 +505,7 @@ CALSCALE:GREGORIAN
             Export
           </Button>
         </Box>
-
         {/* Modal */}
-
         <Modal open={openUploadModal} onClose={handleCloseUpload}>
           <Box
             sx={{
@@ -590,7 +591,6 @@ CALSCALE:GREGORIAN
             )}
           </Box>
         </Modal>
-
         <Modal open={openExportModal} onClose={handleCloseExport}>
           <Box
             sx={{

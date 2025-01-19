@@ -28,8 +28,8 @@ const GradesDashboard = () => {
         pb: 2,
       }}
     >
-      <Box sx={{ padding: 4 }}>
-        <Typography variant="h6" gutterBottom>
+      <Box>
+        <Typography variant="h6" gutterBottom sx={{ marginBottom: 3 }}>
           Your Grades
         </Typography>
 
@@ -136,31 +136,63 @@ const GradesDashboard = () => {
 
           {/* Right Panel: Final Grades */}
           <Grid item xs={12} md={6}>
-            <Box component={Paper} sx={{ padding: 2 }}>
-              <Typography variant="h6" gutterBottom>
-                Final Grades
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                color="textSecondary"
-                gutterBottom
-              >
-                # Credits Total
-              </Typography>
-
+            <Box component={Paper} sx={{ padding: 2, bgcolor: "#FEF7FF" }}>
               <Box
                 sx={{
                   display: "flex",
                   justifyContent: "space-between",
-                  marginBottom: 2,
+                  alignItems: "center",
                 }}
               >
-                <Button variant="contained" color="secondary">
-                  Highest Possible: %
-                </Button>
-                <Button variant="contained" color="secondary">
-                  Current Grade: %
-                </Button>
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  <Typography
+                    variant="h7"
+                    gutterBottom
+                    sx={{ fontWeight: 600 }}
+                  >
+                    Final Grades
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    gutterBottom
+                  >
+                    # Credits Total
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    gap: 2,
+                    marginBottom: 2,
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    sx={{
+                      fontSize: 11,
+                      height: 30,
+                      textTransform: "none",
+                      bgcolor: "#6C4BAE",
+                    }}
+                  >
+                    Highest Possible: %
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    sx={{
+                      fontSize: 11,
+                      height: 30,
+                      textTransform: "none",
+                      bgcolor: "#6C4BAE",
+                    }}
+                  >
+                    Current Grade: %
+                  </Button>
+                </Box>
               </Box>
 
               <TableContainer component={Paper}>
@@ -175,9 +207,9 @@ const GradesDashboard = () => {
                   </TableHead>
                   <TableBody>
                     <TableRow>
-                      <TableCell>Course Name</TableCell>
+                      <TableCell>Assessment Name</TableCell>
                       <TableCell align="right">#</TableCell>
-                      <TableCell align="right">%</TableCell>
+                      <TableCell align="right">#</TableCell>
                       <TableCell align="right">%</TableCell>
                     </TableRow>
                   </TableBody>
