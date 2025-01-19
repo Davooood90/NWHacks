@@ -244,11 +244,11 @@ const AppPage = () => {
   useEffect(() => {
     const cred = sessionStorage.getItem("userEmail"); // Replace with the actual user credentials
     Fetchdb(cred);
-    // sessionStorage.removeItem("userAvator");
-    // sessionStorage.removeItem("schedule");
-    // sessionStorage.removeItem("res");
-    // sessionStorage.removeItem("plan");
-    // sessionStorage.removeItem("allClasses");
+    sessionStorage.removeItem("userAvator");
+    sessionStorage.removeItem("schedule");
+    sessionStorage.removeItem("res");
+    sessionStorage.removeItem("plan");
+    sessionStorage.removeItem("allClasses");
   }, []); // Empty dependency array means this will run only once when the component mounts
 
   return (
@@ -288,7 +288,7 @@ const AppPage = () => {
           </Box>
 
           {/* Right Section */}
-          <Box width={"40%"}>
+          <Box width={"40%"} maxHeight={"70vh"} overflow="auto">
             <Typography variant="h5" gutterBottom>
               Up Coming Classes
             </Typography>
@@ -320,7 +320,7 @@ const AppPage = () => {
                   <Grid item xs={12} key={index}>
                     {/* Entire Card is a Button */}
                     <ButtonBase
-                      onClick={() => console.log(`Clicked on ${item.course}`)}
+                      onClick={() => navigate(`/app/`)}
                       sx={{
                         display: "block",
                         width: "100%",
