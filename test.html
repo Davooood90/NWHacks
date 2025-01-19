@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV or XLSX to JSON</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+</head>
+<body>
+    <input type="file" id="fileInput" />
+
+    <script>
+        // Function to convert CSV to JSON
+        function csvToJson(csv) {
+            const lines = csv.split('\n'); // Split the CSV by line
+            const headers = lines[0].split(','); // Get the headers from the first line
+            const result = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                const obj = {};
+                const currentline = lines[i].split(','); // Split each line by comma
+
+                for (let j = 0; j < headers.length; j++) {
+                    obj[headers[j]] = currentline[j]; // Create an object for each row
+                }
+
+                result.push(obj);
+            }
+
+            return result; // Return array of objects instead of JSON string
+        }
+
+        // Function to convert XLSX to JSON
+        function xlsxToJson(data) {
+            const workbook = XLSX.read(data, { type: 'binary' });
+            const sheetName = workbook.SheetNames[0]; // Get the first sheet
+            const sheet = workbook.Sheets[sheetName];
+            const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+            // Extract headers from the first row
+            const headers = json[0].map(header => header.trim()); // Trim whitespace from headers
+            const result = json.slice(1).map(row => {
+                const obj = {};
+                row.forEach((cell, index) => {
+                    obj[headers[index] || `Column_${index}`] = cell || ""; // Handle missing headers and empty cells
+                });
+                return obj;
+            });
+
+            return result; // Return array of objects
+        }
+
+
+        // Function to handle file input and parse CSV or XLSX
+        document.getElementById('fileInput').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                
+                reader.onload = function (event) {
+                    const fileData = event.target.result;
+                    const fileExtension = file.name.split('.').pop().toLowerCase();
+
+                    let json;
+                    if (fileExtension === 'csv') {
+                        json = csvToJson(fileData); // Handle CSV file
+                    } else if (fileExtension === 'xlsx') {
+                        json = xlsxToJson(fileData); // Handle XLSX file
+                    } else {
+                        json = 'Unsupported file type. Please upload a CSV or XLSX file.';
+                    }
+
+                    // Show the whole JSON in the output section
+                    console.log(json);
+
+                    let temp = json[2]["My Enrolled Courses"];
+                    let temp_arr = temp.split(" - ");
+
+                    const user_json = {
+                        name: temp_arr[0].replace(/[1234567890()]/g, "").trim(),
+                        id: temp_arr[0].replace(/[a-zA-Z()]/g, "").trim(),
+                        // email: "sample@example.com",
+                        Faculty: temp_arr[1],
+                        start_date: temp_arr[2]
+                    };
+
+                    console.log(user_json);
+                        for(let i = 2; i < json.length; i++) {
+                            let term = 1;
+                            if(json[i]["My Enrolled Courses"].includes("Term 1")) {
+                                term = 1;
+                            } else {
+                                term = 2;
+                            }
+                            const course_json = {
+                            name: json[i]["Column_1"],
+                            credits: json[i]["Column_2"],
+                            grading: json[i]["Column_3"],
+                            section: json[i]["Column_4"],
+                            term: term,
+                            format: json[i]["Column_5"],
+                            mode: json[i]["Column_6"],
+                            meeting: json[i]["Column_7"],
+                            status: json[i]["Column_8"],
+                            instructor: json[i]["Column_9"],
+                            start: json[i]["Column_10"],
+                            end: json[i]["Column_11"],
+                        };
+                        console.log(course_json);
+                    }
+              
+                };
+
+                if (file.name.split('.').pop().toLowerCase() === 'xlsx') {
+                    reader.readAsBinaryString(file); // Read XLSX files as binary
+                } else {
+                    reader.readAsText(file); // Read CSV files as text
+                }
+            }
+        });
+    </script>
+</body>
+</html>
