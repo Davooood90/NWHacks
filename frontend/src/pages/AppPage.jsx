@@ -3,7 +3,6 @@ import { Container, Box, Typography, Avatar, ButtonBase } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import axios from "axios";
 import moment from "moment";
-
 function Course(
   courseName,
   courseMode,
@@ -69,7 +68,23 @@ const schedule_t2 = {
   Fri: [],
 };
 
-let quote;
+const quote = [
+  "The only way to do great work is to love what you do.",
+  "Success is not final, failure is not fatal: It is the courage to continue that counts.",
+  "Believe you can and you're halfway there.",
+  "Don't watch the clock; do what it does. Keep going.",
+  "You are never too old to set another goal or to dream a new dream.",
+  "It does not matter how slowly you go as long as you do not stop.",
+  "The future belongs to those who believe in the beauty of their dreams.",
+  "Everything you’ve ever wanted is on the other side of fear.",
+  "The harder you work for something, the greater you’ll feel when you achieve it.",
+  "Opportunities don't happen, you create them.",
+  "Success doesn’t come from what you do occasionally, it comes from what you do consistently.",
+  "The secret of getting ahead is getting started.",
+  "Success is the sum of small efforts, repeated day in and day out.",
+  "Dream big and dare to fail.",
+  "If you want to achieve greatness stop asking for permission."
+];
 
 const currentDate = new Date();
 
@@ -203,21 +218,7 @@ const AppPage = () => {
     sessionStorage.setItem("allClasses", JSON.stringify(courL));
     sessionStorage.setItem("schedule", JSON.stringify(schedule));
   };
-
-  const fetchMotivationalQuote = async () => {
-    try {
-      const response = await fetch("https://zenquotes.io/api/random/");
-      const data = await response.json(); // Parse the JSON data
-
-      // Get the quote and author
-      quote = data[0].q;
-
-      console.log(quote);
-    } catch (error) {
-      console.error("Error fetching the quote:", error);
-    }
-  };
-
+  
   const Fetchdb = async (cred) => {
     try {
       const response = await axios.get("http://localhost:3000/search", {
@@ -229,8 +230,6 @@ const AppPage = () => {
       setName(res["name"]);
 
       CourseList(res["courseList"]);
-
-      fetchMotivationalQuote();
 
       sessionStorage.setItem("plan", JSON.stringify(plan));
       sessionStorage.setItem("res", JSON.stringify(res));
@@ -283,8 +282,8 @@ const AppPage = () => {
               src={sessionStorage.getItem("userAvator")}
             />
             <Typography variant="h6">Good morning, {name}!</Typography>
-            <Typography variant="body1" color="text.secondary">
-              {quote}
+            <Typography variant="body1" color="text.secondary" sx={{textAlign: "center"}}>
+              {quote[Math.floor(Math.random() * quote.length)]}
             </Typography>
           </Box>
 
