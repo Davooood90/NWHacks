@@ -1,18 +1,14 @@
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
-import {jwtDecode} from 'jwt-decode';
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import { Routes, Route } from "react-router-dom";
+
+import HomePage from "./pages/HomePage";
 
 function App() {
   return (
     <GoogleOAuthProvider clientId="405080598434-go6bo0850qf7ebno0lstqad1f8mi37ff.apps.googleusercontent.com">
-      <GoogleLogin
-        onSuccess={(credentialResponse) => {
-          const credentialResponseDecoded = jwtDecode(credentialResponse.credential);
-          console.log(credentialResponseDecoded);
-        }}
-        onError={() => {
-          console.log('Login Failed');
-        }}
-      />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+      </Routes>
     </GoogleOAuthProvider>
   );
 }
