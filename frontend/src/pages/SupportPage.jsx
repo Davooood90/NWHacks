@@ -55,7 +55,8 @@ const HelpCards = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
+        minHeight: "100vh",
+        pt: 5,
       }}
     >
       <Grid container spacing={4} sx={{ padding: "20px" }}>
@@ -65,7 +66,7 @@ const HelpCards = () => {
               sx={{
                 backgroundColor: "#f7f0ff",
                 borderRadius: "8px",
-                textAlign: "center",
+                textAlign: "left",
                 display: "flex",
                 flexDirection: "column",
                 height: "100%",
