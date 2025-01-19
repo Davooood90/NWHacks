@@ -14,6 +14,12 @@ function Course(courseName, courseMode, instructor, schedule, format, credits, d
   this.description = description;
   this.term = term;
   this.time = "";
+
+  this.title = ""; //COMM 192
+  this.location = ""; //location
+  this.type = format || "Lab"; //format
+  this.action = "View more"; //action
+  this.details = description; //description
 }
 
 function areCoursesEqual(courseA, courseB) {
@@ -35,6 +41,8 @@ const yeet = [
 const courses = {};
 
 let plan = [];
+
+let courL = [];
 
 const schedule_t1 = {
   "Mon": [],
@@ -67,7 +75,7 @@ const AppPage = () => {
 
   const StringToCal = (cour) => {
     
-    const name = cour.name;
+    const name = cour.courseName;
     const description = cour.description;
     const inputString = cour.schedule;
 
@@ -76,19 +84,28 @@ const AppPage = () => {
 
     const date = temp[0].split(" - ");
     const time = temp[2].split(" - ");
+    const nam = name.split(' - ');
+    const loc = temp[3].split('\n');
 
     const startDate = date[0]; // 2025-01-10
     const endDate = date[1]; // 2025-02-14
     const daysOfWeek = temp[1]; // Fri
     const startTime = time[0]; // 11:00 a.m.
     const endTime = time[1]; // 12:00 p.m.
-    const location = temp[3]; // FSC-Floor 1-Room 1221
+    const location = loc[0]; // FSC-Floor 1-Room 1221
 
     const startDateFormatted = startDate.replace(/-/g, "");
     const endDateFormatted = endDate.replace(/-/g, "");
 
     cour.time = `${startTime} - ${endTime}`;
-    console.log(cour.time);
+    cour.title = nam[0];
+    cour.location = location;
+
+    // console.log(cour.time);
+
+    if (!courL.some(course => areCoursesEqual(course, cour))) {
+      courL.push(cour); // Add it to the set only if it's not a duplicate
+    }
     
     if(cour.term == 1) {
       daysOfWeek.split(" ")
@@ -141,9 +158,9 @@ const AppPage = () => {
       }
     }
 
-    console.log(courses);
-    console.log(schedule_t1);
-    console.log(schedule_t2);
+    // console.log(courses);
+    // console.log(schedule_t1);
+    // console.log(schedule_t2);
     const isInRange = (currentMonth >= 0 && currentMonth <= 3) || (currentMonth >= 6 && currentMonth <= 7);
     let schedule;
     if (isInRange) {
@@ -179,7 +196,8 @@ const AppPage = () => {
         break;
     }
 
-    sessionStorage.setItem("schedule", JSON.stringify(schedule))
+    sessionStorage.setItem("allClasses", JSON.stringify(courL));
+    sessionStorage.setItem("schedule", JSON.stringify(schedule));
     
   };
 

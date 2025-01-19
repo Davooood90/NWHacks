@@ -13,21 +13,22 @@ import DownloadIcon from "@mui/icons-material/Download";
 import axios from "axios";
 import * as XLSX from "xlsx";
 
-const scheduleData = [
-  { day: "Monday", time: "10 AM", course: "MATH 101", type: "Discussion" },
-  { day: "Monday", time: "11 AM", course: "CPSC 121", type: "Discussion" },
-  { day: "Monday", time: "1 PM", course: "COMM 192", type: "Lecture" },
-  { day: "Monday", time: "2 PM", course: "ECON 102", type: "Lecture" },
-  { day: "Tuesday", time: "1 PM", course: "CPSC 121", type: "Lecture" },
-  { day: "Tuesday", time: "2 PM", course: "COMM 101", type: "Lecture" },
-  { day: "Wednesday", time: "10 AM", course: "CPSC 121", type: "Lab" },
-  { day: "Wednesday", time: "1 PM", course: "COMM 192", type: "Lecture" },
-  { day: "Thursday", time: "10 AM", course: "MATH 101", type: "Lecture" },
-  { day: "Thursday", time: "1 PM", course: "CPSC 121", type: "Lecture" },
-  { day: "Friday", time: "10 AM", course: "COMM 101", type: "Discussion" },
-  { day: "Friday", time: "2 PM", course: "ECON 102", type: "Lecture" },
-  { day: "Friday", time: "3 PM", course: "COMM 101", type: "Lecture" },
-];
+
+// const scheduleData = [
+//   { day: "Monday", time: "10 AM", course: "MATH 101", type: "Discussion" },
+//   { day: "Monday", time: "11 AM", course: "CPSC 121", type: "Discussion" },
+//   { day: "Monday", time: "1 PM", course: "COMM 192", type: "Lecture" },
+//   { day: "Monday", time: "2 PM", course: "ECON 102", type: "Lecture" },
+//   { day: "Tuesday", time: "1 PM", course: "CPSC 121", type: "Lecture" },
+//   { day: "Tuesday", time: "2 PM", course: "COMM 101", type: "Lecture" },
+//   { day: "Wednesday", time: "10 AM", course: "CPSC 121", type: "Lab" },
+//   { day: "Wednesday", time: "1 PM", course: "COMM 192", type: "Lecture" },
+//   { day: "Thursday", time: "10 AM", course: "MATH 101", type: "Lecture" },
+//   { day: "Thursday", time: "1 PM", course: "CPSC 121", type: "Lecture" },
+//   { day: "Friday", time: "10 AM", course: "COMM 101", type: "Discussion" },
+//   { day: "Friday", time: "2 PM", course: "ECON 102", type: "Lecture" },
+//   { day: "Friday", time: "3 PM", course: "COMM 101", type: "Lecture" },
+// ];
 
 let schedule = [];
 
@@ -206,7 +207,17 @@ const Schedule = () => {
             dayOfWeek = "Friday";
           break;
         }
-        schedule.push({day: dayOfWeek, time:jsonObject[day][course]['time'], course: jsonObject[day][course]['courseName'], type: jsonObject[day][course]['courseMode']})
+
+        const tim = jsonObject[day][course]['time'].split(' - ');
+        const nam = jsonObject[day][course]['courseName'].split(' - ');
+
+        schedule.push({
+          day: dayOfWeek, 
+          start_time: tim[0], 
+          end_time: tim[1],
+          course: nam[0], 
+          type: jsonObject[day][course]['courseMode']
+        })
       }
     }
 
