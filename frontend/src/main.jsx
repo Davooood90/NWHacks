@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 import Test from "./Test.jsx";
 import { BrowserRouter } from "react-router-dom";
+// import Calendar from "./pages/Calendar";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -13,8 +14,7 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <App />
-      <Test />
-      <Calender />
+      {/* <Calender /> */}
     </BrowserRouter>
   </StrictMode>
 );

@@ -25,6 +25,7 @@ import StarBorderPurple500OutlinedIcon from "@mui/icons-material/StarBorderPurpl
 import SvgIcon from "@mui/material/SvgIcon";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
+import InnerNav from "./InnerNav";
 
 const drawerWidth = 240;
 
@@ -105,6 +106,7 @@ export default function TemporaryDrawer() {
           >
             <MenuIcon />
           </IconButton>
+          <InnerNav />
         </Toolbar>
       </AppBar>
       <Drawer

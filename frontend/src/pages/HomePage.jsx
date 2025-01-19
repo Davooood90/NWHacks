@@ -75,7 +75,7 @@ const HomePage = () => {
 
           <Button
             onClick={() => {
-              navigate("/app");
+              navigate("/login");
             }}
             sx={{
               marginTop: 6,
