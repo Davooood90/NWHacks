@@ -178,6 +178,8 @@ const AppPage = () => {
         plan = [];
         break;
     }
+
+    sessionStorage.setItem("schedule", JSON.stringify(schedule))
     
   };
 
@@ -209,6 +211,9 @@ const AppPage = () => {
       CourseList(res['courseList']);
 
       fetchMotivationalQuote();
+
+      sessionStorage.setItem("plan", JSON.stringify(plan))
+      sessionStorage.setItem("res", JSON.stringify(res))
 
       console.log(plan);
 
