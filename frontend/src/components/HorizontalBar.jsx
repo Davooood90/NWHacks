@@ -2,37 +2,24 @@ import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
+import { useNavigate, useLocation } from "react-router-dom"; // Import useLocation
 
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = ["Dashboard", "Timetable", "Courses", "Grades"];
+const pageRoutes = {
+  Dashboard: "/app",
+  Timetable: "/app/timetable",
+  Courses: "/app/courses",
+  Grades: "/app/grades",
+};
 
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const location = useLocation(); // Get the current location (URL)
+  const navigate = useNavigate(); // Initialize navigate hook
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const handleNavClick = (page) => {
+    navigate(pageRoutes[page]); // Navigate to the selected route
   };
 
   return (
@@ -48,15 +35,27 @@ function ResponsiveAppBar() {
           <Box
             sx={{
               flexGrow: 1,
-              display: { xs: "none", md: "flex" },
-              boxShadow: "none",
+              display: "flex",
             }}
           >
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "#5e35b1", display: "block" }}
+                onClick={() => handleNavClick(page)} // Trigger handleNavClick
+                sx={{
+                  my: 2,
+                  color:
+                    location.pathname === pageRoutes[page] ? "black" : "gray", // Highlight based on current path
+                  fontWeight:
+                    location.pathname === pageRoutes[page] ? "bold" : "normal", // Bold based on current path
+                  textTransform: "none",
+                  fontSize: "16px",
+                  px: 2,
+                  "&:hover": {
+                    color: "black",
+                  },
+                  bgcolor: "transparent",
+                }}
               >
                 {page}
               </Button>
@@ -67,4 +66,5 @@ function ResponsiveAppBar() {
     </AppBar>
   );
 }
+
 export default ResponsiveAppBar;

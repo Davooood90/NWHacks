@@ -47,9 +47,7 @@ const AppPage = () => {
 
           {/* Right Section */}
           <Box width={"40%"}>
-            <Typography variant="h5" gutterBottom>
-              Today’s Plan
-            </Typography>
+            <Typography variant="h6">Today’s Plan</Typography>
             <Typography
               variant="body2"
               color="text.secondary"
