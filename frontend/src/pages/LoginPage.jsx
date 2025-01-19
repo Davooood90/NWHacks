@@ -6,9 +6,14 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Circles from "../components/Circles";
 import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
 const HomePage = () => {
   const navigate = useNavigate();
+
+  const goToApp = () => {
+    navigate('/app');
+  };
 
   return (
     <>
@@ -61,6 +66,8 @@ const HomePage = () => {
                 credentialResponse.credential
               );
               console.log(credentialResponseDecoded.email);
+              sessionStorage.setItem("userEmail", credentialResponseDecoded.email);
+              goToApp();
             }}
             onError={() => {
               console.log("Login Failed");

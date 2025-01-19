@@ -9,6 +9,16 @@ import Circles from "../components/Circles";
 const HomePage = () => {
   const navigate = useNavigate();
 
+  const HandleClick = () => {
+    const email = sessionStorage.getItem("userEmail");
+    console.log(email);
+    if(!email) {
+      navigate("/login");      
+    } else {
+      navigate("/app");
+    }
+  }
+
   return (
     <>
       <Container
@@ -74,9 +84,7 @@ const HomePage = () => {
           </Typography>
 
           <Button
-            onClick={() => {
-              navigate("/app");
-            }}
+            onClick={HandleClick}
             sx={{
               marginTop: 6,
               borderRadius: 5,
