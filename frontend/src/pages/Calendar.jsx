@@ -131,6 +131,8 @@ CALSCALE:GREGORIAN
     const blob = new Blob([icsContent], { type: "text/calendar" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
+    const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=Event&dates=20250101T090000Z/20250101T100000Z&details=Event+details&location=Event+location&sf=true&output=xml&src=${encodeURIComponent(icsFileUrl)}`;
+    window.open(googleCalendarUrl, '_blank');
     link.download = "calendar-events.ics";
     link.click();
   };

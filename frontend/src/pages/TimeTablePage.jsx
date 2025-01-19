@@ -14,8 +14,6 @@ import Calendar from "../components/Calendar";
 import axios from "axios";
 import * as XLSX from "xlsx";
 
-let schedule = [];
-
 const Schedule = () => {
   const courses = [
     {
@@ -37,9 +35,29 @@ const Schedule = () => {
   const [open, setOpen] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
   const [files, setFiles] = useState([]);
+  const [schedule, setSchedule] = useState([]);
 
   const [openUploadModal, setOpenUploadModal] = useState(false);
   const [openExportModal, setOpenExportModal] = useState(false);
+
+  function convertTo24HourFormat(time) {
+    // Split the time and period (AM/PM)
+    const [hourMin, period] = time.split(' ');
+  
+    // Split hour and minute
+    let [hour, minute] = hourMin.split(':');
+  
+    // Convert to 24-hour format based on AM/PM
+    if (period.toLowerCase() === 'p.m.' && hour !== '12') {
+      hour = parseInt(hour) + 12;
+    } else if (period.toLowerCase() === 'a.m.' && hour === '12') {
+      hour = '00'; // Midnight case
+    }
+  
+    // Return time in 24-hour format
+    // return `${hour}:${minute}`;
+    return `${hour}`;
+  }
 
   // Function to convert CSV to JSON
   const csvToJson = (csv) => {
@@ -103,7 +121,9 @@ const Schedule = () => {
 
     const reader = new FileReader();
 
-    reader.onload = (event) => {
+    setSchedule([]);
+
+    reader.onload = async (event) => {
       const fileData = event.target.result;
       let json;
 
@@ -166,7 +186,26 @@ const Schedule = () => {
           updates: userData,
         };
 
-        axios.put("http://localhost:3000/update", updates);
+        const tp = await axios.get("http://localhost:3000/search", {
+          params: { email: sessionStorage.getItem("userEmail") },
+        });;
+
+        console.log(tp.data.length);
+
+        if(tp.data.length == 0) {
+          const saveData = {
+            name: userData.name,
+            id: userData.id,
+            faculty: userData.faculty,
+            start_date: userData.start_date,
+            email: sessionStorage.getItem("userEmail"),
+            courseList: [],
+          }
+          axios.post("http://localhost:3000/save-json", saveData);
+        } 
+
+        axios.put("http://localhost:3000/update", updates);          
+
       } else {
         console.warn(
           "The JSON structure does not contain 'My Enrolled Courses' at index 2."
@@ -184,45 +223,60 @@ const Schedule = () => {
   const initialize = () => {
     let temp = sessionStorage.getItem("schedule");
 
-    const jsonObject = JSON.parse(temp);
-    
-    console.log(jsonObject);
+    setSchedule([]);
 
-    for(let day in jsonObject) {
-      for(let course in jsonObject[day]) {
-        let dayOfWeek;
-        switch(day) {
-          case "Mon":
-            dayOfWeek = "Monday";
-          break;
-          case "Tue":
-            dayOfWeek = "Tuesday";
-            break;
-          case "Wed":
-            dayOfWeek = "Wednesday";
-            break;
-          case "Thu":
-            dayOfWeek = "Thursday";
-            break;
-          case "Fri":
-            dayOfWeek = "Friday";
-          break;
+    if (temp) {
+      const jsonObject = JSON.parse(temp);
+
+      let updatedSchedule = [];
+      
+      for (let day in jsonObject) {
+        for (let course in jsonObject[day]) {
+          let dayOfWeek;
+          switch (day) {
+            case "Mon":
+              dayOfWeek = "Monday";
+              break;
+            case "Tue":
+              dayOfWeek = "Tuesday";
+              break;
+            case "Wed":
+              dayOfWeek = "Wednesday";
+              break;
+            case "Thu":
+              dayOfWeek = "Thursday";
+              break;
+            case "Fri":
+              dayOfWeek = "Friday";
+              break;
+          }
+
+          const tim = jsonObject[day][course]["time"].split(" - ");
+          const nam = jsonObject[day][course]["courseName"].split(" - ");
+
+          function isUniqueSchedule(schedule, day, start_time, end_time) {
+            return !schedule.some((item) =>
+              item.day === day && item.start_time === start_time && item.end_time === end_time
+            );
+          }
+
+          // Check for uniqueness before adding to schedule
+          const courseSchedule = {
+            day: dayOfWeek.substring(0, 3),
+            start_time: parseInt(convertTo24HourFormat(tim[0])),
+            end_time: parseInt(convertTo24HourFormat(tim[1])),
+            course: nam[0],
+            type: jsonObject[day][course]["courseMode"],
+          };
+
+          if (isUniqueSchedule(updatedSchedule, courseSchedule.day, courseSchedule.start_time, courseSchedule.end_time)) {
+            updatedSchedule.push(courseSchedule);
+          }
         }
-
-        const tim = jsonObject[day][course]['time'].split(' - ');
-        const nam = jsonObject[day][course]['courseName'].split(' - ');
-
-        schedule.push({
-          day: dayOfWeek, 
-          start_time: tim[0], 
-          end_time: tim[1],
-          course: nam[0], 
-          type: jsonObject[day][course]['courseMode']
-        })
       }
-    }
 
-    console.log(schedule);
+      setSchedule(updatedSchedule);
+    }
   };
 
   // useEffect hook to run once when the component is first rendered
@@ -361,7 +415,15 @@ CALSCALE:GREGORIAN
     const blob = new Blob([icsContent], { type: "text/calendar" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = "calendar-events.ics";
+    link.download = "calendar-events.ics"; // Specify the file name for the download
+  
+    // Create Google Calendar URL for the pre-filled event
+    const googleCalendarUrl = `https://calendar.google.com/calendar/u/0/r/settings/export?sf=true&output=xml`;
+  
+    // Open the Google Calendar pre-filled event
+    window.open(googleCalendarUrl, '_blank');
+  
+    // Trigger the download of the ICS file
     link.click();
   };
 
@@ -395,15 +457,15 @@ CALSCALE:GREGORIAN
           pb: 2,
         }}
       >
-        <Typography
+        {sessionStorage.getItem('res') && <Typography
           variant="h6"
           align="left"
           sx={{ marginBottom: 3 }}
           gutterBottom
         >
           Welcome, {JSON.parse(sessionStorage.getItem('res'))['name']}!
-        </Typography>
-        <Calendar courses = {courses}></Calendar>
+        </Typography>}
+        {sessionStorage.getItem("res") && <Calendar courses = {schedule}></Calendar>}
         <Box
           sx={{
             display: "flex",

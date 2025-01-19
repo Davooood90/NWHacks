@@ -19,8 +19,8 @@ const Calendar = ({ courses }) => {
           key={index}
           className="solid-cal-slot cal-slot cal-slot-no-drag-and-drop"
           style={{
-            gridArea: `${2 * (course.starttime - 8) + 3} / ${course.day} / ${
-              2 * (course.endtime - 8) + 3
+            gridArea: `${2 * (course.start_time - 8) + 3} / ${course.day} / ${
+              2 * (course.end_time - 8) + 3
             }`,
             color: "grey",
             backgroundColor: "#E8DEF8",
@@ -29,9 +29,8 @@ const Calendar = ({ courses }) => {
         >
           <div className="cal-slot-container">
             <div className="cal-slot-details">
-              <div>{course.name}</div>
+              <div>{course.course}</div>
             </div>
-            <div>{course.section}</div>
           </div>
         </div>
       ))}

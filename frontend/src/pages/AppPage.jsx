@@ -244,6 +244,11 @@ const AppPage = () => {
   useEffect(() => {
     const cred = sessionStorage.getItem("userEmail"); // Replace with the actual user credentials
     Fetchdb(cred);
+    sessionStorage.removeItem("userAvator");
+    sessionStorage.removeItem("schedule");
+    sessionStorage.removeItem("res");
+    sessionStorage.removeItem("plan");
+    sessionStorage.removeItem("allClasses");
   }, []); // Empty dependency array means this will run only once when the component mounts
 
 

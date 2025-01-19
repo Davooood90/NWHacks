@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ICS File to Google Calendar</title>
+  <script>
+    function addToGoogleCalendar() {
+      // URL to your hosted .ics file (you will need to upload it somewhere, like your server or Google Drive)
+      const icsFileUrl = 'https://yourserver.com/path/to/yourfile.ics';
+      
+      // Google Calendar URL for event creation, with a placeholder for the ics file URL
+      const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=Event&dates=20250101T090000Z/20250101T100000Z&details=Event+details&location=Event+location&sf=true&output=xml&src=${encodeURIComponent(icsFileUrl)}`;
+      
+      // Open the Google Calendar event creation page with the ICS file
+      window.open(googleCalendarUrl, '_blank');
+    }
+  </script>
+</head>
+<body>
+  <h1>Add Event to Google Calendar</h1>
+  <button onclick="addToGoogleCalendar()">Add to Google Calendar</button>
+</body>
+</html>
