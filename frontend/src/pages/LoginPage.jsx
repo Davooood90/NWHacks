@@ -65,7 +65,8 @@ const HomePage = () => {
               const credentialResponseDecoded = jwtDecode(
                 credentialResponse.credential
               );
-              console.log(credentialResponseDecoded.email);
+              console.log(credentialResponseDecoded);
+              sessionStorage.setItem("userAvator", credentialResponseDecoded.picture);
               sessionStorage.setItem("userEmail", credentialResponseDecoded.email);
               goToApp();
             }}
