@@ -1,10 +1,19 @@
-import {React, useEffect, useState} from "react";
+import { React, useEffect, useState } from "react";
 import { Container, Box, Typography, Avatar, ButtonBase } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import axios from "axios";
-import moment from 'moment';
+import moment from "moment";
 
-function Course(courseName, courseMode, instructor, schedule, format, credits, description, term) {
+function Course(
+  courseName,
+  courseMode,
+  instructor,
+  schedule,
+  format,
+  credits,
+  description,
+  term
+) {
   this.courseName = courseName;
   this.courseMode = courseMode;
   this.instructor = instructor;
@@ -45,47 +54,44 @@ let plan = [];
 let courL = [];
 
 const schedule_t1 = {
-  "Mon": [],
-  "Tue": [],
-  "Wed": [],
-  "Thu": [],
-  "Fri": []
+  Mon: [],
+  Tue: [],
+  Wed: [],
+  Thu: [],
+  Fri: [],
 };
 
 const schedule_t2 = {
-  "Mon": [],
-  "Tue": [],
-  "Wed": [],
-  "Thu": [],
-  "Fri": []
+  Mon: [],
+  Tue: [],
+  Wed: [],
+  Thu: [],
+  Fri: [],
 };
 
-let quote; 
+let quote;
 
 const currentDate = new Date();
 
 const dayOfWeek = currentDate.getDay();
 const currentMonth = currentDate.getMonth();
 
-const formattedDate = currentDate.toLocaleString();  // Converts to a readable string
+const formattedDate = currentDate.toLocaleString(); // Converts to a readable string
 
 const AppPage = () => {
-  
   const [name, setName] = useState("");
 
   const StringToCal = (cour) => {
-    
     const name = cour.courseName;
     const description = cour.description;
     const inputString = cour.schedule;
 
-    
     const temp = inputString.split(" | ");
 
     const date = temp[0].split(" - ");
     const time = temp[2].split(" - ");
-    const nam = name.split(' - ');
-    const loc = temp[3].split('\n');
+    const nam = name.split(" - ");
+    const loc = temp[3].split("\n");
 
     const startDate = date[0]; // 2025-01-10
     const endDate = date[1]; // 2025-02-14
@@ -103,21 +109,19 @@ const AppPage = () => {
 
     // console.log(cour.time);
 
-    if (!courL.some(course => areCoursesEqual(course, cour))) {
+    if (!courL.some((course) => areCoursesEqual(course, cour))) {
       courL.push(cour); // Add it to the set only if it's not a duplicate
     }
-    
-    if(cour.term == 1) {
-      daysOfWeek.split(" ")
-      .map((day) => {
-        if (!schedule_t1[day].some(course => areCoursesEqual(course, cour))) {
+
+    if (cour.term == 1) {
+      daysOfWeek.split(" ").map((day) => {
+        if (!schedule_t1[day].some((course) => areCoursesEqual(course, cour))) {
           schedule_t1[day].push(cour); // Add it to the set only if it's not a duplicate
         }
       });
     } else {
-      daysOfWeek.split(" ")
-      .map((day) => {
-        if (!schedule_t2[day].some(course => areCoursesEqual(course, cour))) {
+      daysOfWeek.split(" ").map((day) => {
+        if (!schedule_t2[day].some((course) => areCoursesEqual(course, cour))) {
           schedule_t2[day].push(cour); // Add it to the set only if it's not a duplicate
         }
       });
@@ -125,9 +129,7 @@ const AppPage = () => {
   };
 
   const CourseList = async (res) => {
-    
     for (let i = 0; i < res.length; i++) {
-
       const description = `
         course: ${res[i]["section"]} \n
         credit: ${res[i]["credits"]} \n
@@ -144,7 +146,7 @@ const AppPage = () => {
         res[i]["format"],
         res[i]["credits"],
         description,
-        res[i]['term']
+        res[i]["term"]
       );
 
       const name = res[i]["name"];
@@ -161,7 +163,9 @@ const AppPage = () => {
     // console.log(courses);
     // console.log(schedule_t1);
     // console.log(schedule_t2);
-    const isInRange = (currentMonth >= 0 && currentMonth <= 3) || (currentMonth >= 6 && currentMonth <= 7);
+    const isInRange =
+      (currentMonth >= 0 && currentMonth <= 3) ||
+      (currentMonth >= 6 && currentMonth <= 7);
     let schedule;
     if (isInRange) {
       schedule = schedule_t2;
@@ -169,27 +173,27 @@ const AppPage = () => {
       schedule = schedule_t1;
     }
 
-    switch(dayOfWeek) {
-      case 0: 
-        plan = schedule['Mon'] || [];  // Ensure it's always an array
+    switch (dayOfWeek) {
+      case 0:
+        plan = schedule["Mon"] || []; // Ensure it's always an array
         break;
-      case 1: 
-        plan = schedule['Mon'] || [];
+      case 1:
+        plan = schedule["Mon"] || [];
         break;
-      case 2: 
-        plan = schedule['Tue'] || [];
+      case 2:
+        plan = schedule["Tue"] || [];
         break;
-      case 3: 
-        plan = schedule['Wed'] || [];
+      case 3:
+        plan = schedule["Wed"] || [];
         break;
-      case 4: 
-        plan = schedule['Thu'] || [];
+      case 4:
+        plan = schedule["Thu"] || [];
         break;
-      case 5: 
-        plan = schedule['Fri'] || [];
+      case 5:
+        plan = schedule["Fri"] || [];
         break;
-      case 6: 
-        plan = schedule['Mon'] || [];
+      case 6:
+        plan = schedule["Mon"] || [];
         break;
       default:
         plan = [];
@@ -198,19 +202,17 @@ const AppPage = () => {
 
     sessionStorage.setItem("allClasses", JSON.stringify(courL));
     sessionStorage.setItem("schedule", JSON.stringify(schedule));
-    
   };
 
   const fetchMotivationalQuote = async () => {
     try {
       const response = await fetch("https://zenquotes.io/api/random/");
       const data = await response.json(); // Parse the JSON data
-  
+
       // Get the quote and author
-      quote = data[0].q;  
+      quote = data[0].q;
 
       console.log(quote);
-
     } catch (error) {
       console.error("Error fetching the quote:", error);
     }
@@ -224,21 +226,20 @@ const AppPage = () => {
 
       const res = response.data[0];
 
-      setName(res['name']);
+      setName(res["name"]);
 
-      CourseList(res['courseList']);
+      CourseList(res["courseList"]);
 
       fetchMotivationalQuote();
 
-      sessionStorage.setItem("plan", JSON.stringify(plan))
-      sessionStorage.setItem("res", JSON.stringify(res))
+      sessionStorage.setItem("plan", JSON.stringify(plan));
+      sessionStorage.setItem("res", JSON.stringify(res));
 
       console.log(plan);
-
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }  
+  };
 
   // Using useEffect to call Fetchdb on page load
   useEffect(() => {
@@ -250,7 +251,6 @@ const AppPage = () => {
     sessionStorage.removeItem("plan");
     sessionStorage.removeItem("allClasses");
   }, []); // Empty dependency array means this will run only once when the component mounts
-
 
   return (
     <>
@@ -280,7 +280,7 @@ const AppPage = () => {
           >
             <Avatar
               sx={{ width: 200, height: 200, bgcolor: "grey.400", mb: 2 }}
-              src= {sessionStorage.getItem("userAvator")}
+              src={sessionStorage.getItem("userAvator")}
             />
             <Typography variant="h6">Good morning, {name}!</Typography>
             <Typography variant="body1" color="text.secondary">
@@ -303,77 +303,81 @@ const AppPage = () => {
             </Typography>
             <Grid container spacing={2}>
               {plan
-              .sort((a, b) => {
-                // Convert time to 24-hour format for comparison
-                const timeA = moment(a.time, ["h:mm A"]).format("HH:mm");
-                const timeB = moment(b.time, ["h:mm A"]).format("HH:mm");
+                .sort((a, b) => {
+                  // Convert time to 24-hour format for comparison
+                  const timeA = moment(a.time, ["h:mm A"]).format("HH:mm");
+                  const timeB = moment(b.time, ["h:mm A"]).format("HH:mm");
 
-                const minutesA = parseInt(timeA.split(":")[0]) * 60 + parseInt(timeA.split(":")[1]);
-                const minutesB = parseInt(timeB.split(":")[0]) * 60 + parseInt(timeB.split(":")[1]);
+                  const minutesA =
+                    parseInt(timeA.split(":")[0]) * 60 +
+                    parseInt(timeA.split(":")[1]);
+                  const minutesB =
+                    parseInt(timeB.split(":")[0]) * 60 +
+                    parseInt(timeB.split(":")[1]);
 
-                return minutesA - minutesB;
-              })
-              .map((item, index) => (
-                <Grid item xs={12} key={index}>
-                  {/* Entire Card is a Button */}
-                  <ButtonBase
-                    onClick={() => console.log(`Clicked on ${item.course}`)}
-                    sx={{
-                      display: "block",
-                      width: "100%",
-                      textAlign: "left",
-                      borderRadius: 2,
-                      "&:hover": { boxShadow: 3 },
-                    }}
-                  >
-                    <Box
+                  return minutesA - minutesB;
+                })
+                .map((item, index) => (
+                  <Grid item xs={12} key={index}>
+                    {/* Entire Card is a Button */}
+                    <ButtonBase
+                      onClick={() => console.log(`Clicked on ${item.course}`)}
                       sx={{
-                        border: "1px solid #ddd",
+                        display: "block",
+                        width: "100%",
+                        textAlign: "left",
                         borderRadius: 2,
-                        p: 2,
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        bgcolor: "#FEF7FF",
+                        "&:hover": { boxShadow: 3 },
                       }}
                     >
-                      {/* Type and Course */}
-                      <Box display="flex" alignItems="center">
-                        {/* Purple Circle */}
-                        <Box
-                          sx={{
-                            width: 30,
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            mr: 2,
-                          }}
-                        >
-                          <Typography
-                            variant="body2"
-                            color="purple"
-                            fontWeight="bold"
+                      <Box
+                        sx={{
+                          border: "1px solid #ddd",
+                          borderRadius: 2,
+                          p: 2,
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          bgcolor: "#FEF7FF",
+                        }}
+                      >
+                        {/* Type and Course */}
+                        <Box display="flex" alignItems="center">
+                          {/* Purple Circle */}
+                          <Box
+                            sx={{
+                              width: 70,
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              mr: 2,
+                            }}
                           >
-                            {item.courseMode}
-                          </Typography>
-                        </Box>
-                        <Box
-                          sx={{
-                            width: 200,
-                          }}
-                        >
-                          <Typography variant="subtitle1">
-                            {item.courseName}
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            {item.time}
-                          </Typography>
+                            <Typography
+                              variant="body2"
+                              color="purple"
+                              fontWeight="bold"
+                            >
+                              {item.courseMode}
+                            </Typography>
+                          </Box>
+                          <Box
+                            sx={{
+                              width: 200,
+                            }}
+                          >
+                            <Typography variant="subtitle1">
+                              {item.courseName}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                              {item.time}
+                            </Typography>
+                          </Box>
                         </Box>
                       </Box>
-                    </Box>
-                  </ButtonBase>
-                </Grid>
-              ))}
+                    </ButtonBase>
+                  </Grid>
+                ))}
             </Grid>
           </Box>
         </Box>
