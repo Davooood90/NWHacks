@@ -60,7 +60,7 @@ const HomePage = () => {
             </SvgIcon>
           </Typography>
 
-          <GoogleLogin
+          <GoogleLogin  
             onSuccess={async (credentialResponse) => {
               const credentialResponseDecoded = jwtDecode(
                 credentialResponse.credential

@@ -25,6 +25,7 @@ import StarBorderPurple500OutlinedIcon from "@mui/icons-material/StarBorderPurpl
 import SvgIcon from "@mui/material/SvgIcon";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
+import HorizontalBar from "./HorizontalBar";
 
 const drawerWidth = 240;
 
@@ -105,6 +106,7 @@ export default function TemporaryDrawer() {
           >
             <MenuIcon />
           </IconButton>
+          {sessionStorage.getItem("userEmail") ? <div><HorizontalBar></HorizontalBar></div> : null}
         </Toolbar>
       </AppBar>
       <Drawer
