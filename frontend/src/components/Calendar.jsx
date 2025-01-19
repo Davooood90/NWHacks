@@ -19,7 +19,9 @@ const Calendar = ({ courses }) => {
           key={index}
           className="solid-cal-slot cal-slot cal-slot-no-drag-and-drop"
           style={{
-            gridArea: `${course.starttime} / ${course.day} / ${course.endtime}`,
+            gridArea: `${2 * (course.starttime - 8) + 3} / ${course.day} / ${
+              2 * (course.endtime - 8) + 3
+            }`,
             color: "grey",
             backgroundColor: "#E8DEF8",
           }}

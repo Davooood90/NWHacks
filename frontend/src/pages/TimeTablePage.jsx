@@ -12,29 +12,13 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DownloadIcon from "@mui/icons-material/Download";
 import Calendar from "../components/Calendar";
 
-const classes = [
-  { day: "Monday", startTime: "08:00", endTime: "10:00", name: "Math 101" },
-  {
-    day: "Wednesday",
-    startTime: "10:30",
-    endTime: "12:00",
-    name: "Physics 202",
-  },
-  {
-    day: "Friday",
-    startTime: "13:00",
-    endTime: "15:00",
-    name: "Chemistry 303",
-  },
-];
-
 const Schedule = () => {
   const courses = [
     {
       name: "ECON 101",
       section: "002",
       starttime: 11,
-      endtime: 12,
+      endtime: 13,
       day: "Mon",
     },
     {
