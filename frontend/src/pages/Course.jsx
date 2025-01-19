@@ -144,7 +144,7 @@ const Courses = () => {
 
                   <Box sx={{ display: "flex", gap: 1, marginBottom: 2 }}>
                     {/* Render Lecture, Discussion, and Lab buttons */}
-                    {["Lecture", "Discussion", "Lab"].map((type, idx) => (
+                    {["Lecture", "Discussion", "Laboratory"].map((type, idx) => (
                       <Button
                         key={idx}
                         variant="contained"
@@ -216,52 +216,15 @@ const Courses = () => {
                 <CloseIcon />
               </IconButton>
             </DialogTitle>
-            <DialogContent dividers>
-              <Box sx={{ marginBottom: 2 }}>
-                {/* Google Maps Embed */}
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5207.221445035165!2d-123.25636882345813!3d49.26482387139015!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x548672b5db6faaeb%3A0x7d0e6eae5fc5e75!2sUBC%20Sauder%20School%20of%20Business!5e0!3m2!1sen!2sca!4v1737283234349!5m2!1sen!2sca"
-                  width="100%"
-                  height="200"
-                  style={{ border: 0 }}
-                  allowFullScreen=""
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                ></iframe>
-              </Box>
+            <DialogContent>
               <Typography variant="body1" gutterBottom>
                 <strong>Course Title:</strong>{" "}
-                {selectedCourse.details.instructor}
+                {selectedCourse.title}
               </Typography>
               <Typography variant="body1" gutterBottom>
-                <strong>Instructor:</strong> {selectedCourse.details.instructor}
+                <strong>Details:</strong>{" "}
+                {selectedCourse.details}
               </Typography>
-              <Typography variant="body1" gutterBottom>
-                <strong>Materials:</strong> {selectedCourse.details.materials}
-              </Typography>
-
-              <Typography variant="body1" gutterBottom>
-                <strong>Exams:</strong>
-              </Typography>
-              {selectedCourse.details.midterms.map((exam, idx) => (
-                <Typography key={idx} variant="body2" gutterBottom>
-                  {exam.title}: {exam.date}
-                </Typography>
-              ))}
-              <Typography variant="body2" gutterBottom>
-                Final Exam: {selectedCourse.details.finalExam}
-              </Typography>
-
-              <Typography variant="body1" gutterBottom>
-                <strong>Additional Information:</strong>
-              </Typography>
-              <ul>
-                {selectedCourse.details.additionalInfo.map((info, idx) => (
-                  <li key={idx}>
-                    <Typography variant="body2">{info}</Typography>
-                  </li>
-                ))}
-              </ul>
             </DialogContent>
             <DialogActions>
               <Button
