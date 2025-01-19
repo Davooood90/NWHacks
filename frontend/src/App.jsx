@@ -22,9 +22,9 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/app/timetable" element={<TimeTablePage />} />
-        <Route path="/app/courses" element={<Courses />} />
-        <Route path="/app/grades" element={<GradesDashboard />} />
+        <Route path="/app/timetable" element={<ProtectedRoute element={<TimeTablePage />} />} />
+        <Route path="/app/courses" element={<ProtectedRoute element={<Courses />} />} />
+        <Route path="/app/grades" element={<ProtectedRoute element={<GradesDashboard />} />} />
         <Route 
           path="/app" 
           element={<ProtectedRoute element={<AppPage />} />} 
