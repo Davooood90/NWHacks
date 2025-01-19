@@ -1,4 +1,4 @@
-import React from "react";
+import {React, useEffect} from "react";
 import {
   Grid,
   Card,
@@ -65,6 +65,8 @@ const courses = [
   },
 ];
 
+let classList = [];
+
 const Courses = () => {
   const [open, setOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
@@ -78,6 +80,40 @@ const Courses = () => {
     setOpen(false);
     setSelectedCourse(null);
   };
+
+  const init = () => {
+    const temp = sessionStorage.getItem('allClasses');
+    const jsonObj = JSON.parse(temp);
+
+    classList = [];
+    let seen = new Set(); // To track unique combinations of title and location
+    
+    for (let i = 0; i < jsonObj.length; i++) {
+      const currentClass = jsonObj[i];
+    
+      // Check if the combination of title and location already exists
+      const identifier = `${currentClass.title}-${currentClass.location}`;
+      
+      if (!seen.has(identifier)) {
+        seen.add(identifier);
+        classList.push({
+          title: currentClass['title'],
+          location: currentClass['location'],
+          type: currentClass['type'],
+          action: currentClass['action'],
+          credits: currentClass['credits'],
+          details: currentClass['details']
+        });
+      }
+    }
+
+    // console.log(classList);
+  };
+
+  useEffect(() => {
+    init();
+  }, []);
+
   return (
     <Container
       maxWidth="lg"
@@ -93,7 +129,7 @@ const Courses = () => {
           Your Courses
         </Typography>
         <Grid container spacing={3}>
-          {courses.map((course, index) => (
+          {classList.map((course, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
               <Card sx={{ borderRadius: 2, boxShadow: 3, bgcolor: "#FEF7FF" }}>
                 <CardContent>
