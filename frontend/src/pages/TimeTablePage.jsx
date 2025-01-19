@@ -418,69 +418,9 @@ CALSCALE:GREGORIAN
           sx={{ marginBottom: 3 }}
           gutterBottom
         >
-          Welcome, user_name!
+          Welcome, {JSON.parse(sessionStorage.getItem('res'))['name']}!
         </Typography>
-        <Box sx={{ p: 4, backgroundColor: "#f9f6fb", mb: 2 }}>
-          <Grid container>
-            {/* Header */}
-            <Grid item xs={1} />
-            {days.map((day, index) => (
-              <Grid
-                item
-                xs={1.5}
-                key={index}
-                sx={{ textAlign: "center", fontWeight: "bold" }}
-              >
-                {day}
-              </Grid>
-            ))}
-            {/* Time Slots */}
-            {times.map((time) => (
-              <React.Fragment key={time}>
-                {/* Time Column */}
-                <Grid
-                  item
-                  xs={1}
-                  sx={{ textAlign: "right", pr: 1, fontWeight: "bold" }}
-                >
-                  {time}
-                </Grid>
-                {/* Schedule */}
-                {days.map((day) => (
-                  <Grid
-                    item
-                    xs={1.5}
-                    key={day}
-                    sx={{ border: "1px solid #e0e0e0", minHeight: "60px" }}
-                  >
-                    {schedule
-                      .filter((slot) => slot.time === time && slot.day === day)
-                      .map((slot, idx) => (
-                        <Paper
-                          key={idx}
-                          elevation={3}
-                          sx={{
-                            backgroundColor: "#dcd6f7",
-                            p: 1,
-                            mb: 0.5,
-                            fontSize: "0.875rem",
-                          }}
-                        >
-                          <Typography
-                            variant="subtitle2"
-                            sx={{ fontWeight: "bold" }}
-                          >
-                            {slot.course}
-                          </Typography>
-                          <Typography variant="body2">{slot.type}</Typography>
-                        </Paper>
-                      ))}
-                  </Grid>
-                ))}
-              </React.Fragment>
-            ))}
-          </Grid>
-        </Box>
+        <Calendar courses = {courses}></Calendar>
         <Box
           sx={{
             display: "flex",
