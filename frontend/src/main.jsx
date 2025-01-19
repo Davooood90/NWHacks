@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
-// import Test from "./Test.jsx";
+import Test from "./Test.jsx";
 import { BrowserRouter } from "react-router-dom";
 
 import "@fontsource/roboto/300.css";
@@ -13,7 +13,7 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <App />
-      {/* <Test /> */}
+      <Test />
     </BrowserRouter>
   </StrictMode>
 );
