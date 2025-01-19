@@ -83,7 +83,7 @@ const quote = [
   "The secret of getting ahead is getting started.",
   "Success is the sum of small efforts, repeated day in and day out.",
   "Dream big and dare to fail.",
-  "If you want to achieve greatness stop asking for permission."
+  "If you want to achieve greatness stop asking for permission.",
 ];
 
 const currentDate = new Date();
@@ -218,7 +218,7 @@ const AppPage = () => {
     sessionStorage.setItem("allClasses", JSON.stringify(courL));
     sessionStorage.setItem("schedule", JSON.stringify(schedule));
   };
-  
+
   const Fetchdb = async (cred) => {
     try {
       const response = await axios.get("http://localhost:3000/search", {
@@ -276,13 +276,18 @@ const AppPage = () => {
             flexDirection="column"
             alignItems="center"
             width={"60%"}
+            p={4}
           >
             <Avatar
               sx={{ width: 200, height: 200, bgcolor: "grey.400", mb: 2 }}
               src={sessionStorage.getItem("userAvator")}
             />
             <Typography variant="h6">Good morning, {name}!</Typography>
-            <Typography variant="body1" color="text.secondary" sx={{textAlign: "center"}}>
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              sx={{ textAlign: "center" }}
+            >
               {quote[Math.floor(Math.random() * quote.length)]}
             </Typography>
           </Box>
